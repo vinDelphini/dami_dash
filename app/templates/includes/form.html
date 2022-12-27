@@ -1,0 +1,38 @@
+{% if form.errors %}
+    <div class="text-center bg-red-200 my-2 py-4 rounded">
+        Please correct the errors below in your form.
+    </div>
+    {% for error in form.non_field_errors %}
+        {% include "includes/form_field_error.html" with error=error %}
+    {% endfor %}
+{% endif %}
+
+{% for field in form.visible_fields %}
+    {% if field.field.widget.input_type == "text" or field.field.widget.input_type == "url" or field.field.widget.input_type == "number" or field.field.widget.input_type == "password" %}
+        {% include "includes/form_input.html" with field=field %}
+    {% endif %}
+
+    {% if field.field.widget.input_type == "email" %}
+        {% include "includes/form_input.html" with field=field %}
+    {% endif %}
+
+    {% if field.field.widget.input_type == "select" %}
+        {% include "includes/form_select.html" with field=field %}
+    {% endif %}
+
+    {% if field.field.widget.input_type == "checkbox" %}
+        {% include "includes/form_checkbox.html" with field=field %}
+    {% endif %}
+
+    {% if field.field.widget.input_type == "file" %}
+        {% include "includes/form_filefield.html" with field=field %}
+    {% endif %}
+
+    {% if not field.field.widget.input_type %}
+        {% include "includes/form_textarea.html" with field=field %}
+    {% endif %}
+{% endfor %}
+
+{% for field in form.hidden_fields %}
+    {{ field }}
+{% endfor %}

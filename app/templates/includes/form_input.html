@@ -1,0 +1,30 @@
+<div class="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:border-b sm:border-gray-200 py-2 sm:py-5">
+<label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+    {% include "includes/form_label_text.html" with field=field %}
+</label>
+    <div class="mt-1">
+        <input type="{{ field.field.widget.input_type|default:'text' }}"
+               {% if field.field.required %} required {% endif %}
+               {% if field.field.disabled %} disabled {% endif %}
+            {% for attr_name, value in field.field.widget.attrs.items %}
+                {% if attr_name != "class" %}
+                    {# Add classes below, with other classes. #}
+                    {{ attr_name }}="{{ value }}"
+                {% endif %}
+            {% endfor %}
+            {% if field.field.widget.input_type == "number" %}
+                 {% if not field.field.widget.attrs.step %}
+                     {# By default, decimal/floating point fields have step set, and whole numbers do not. #}
+                     step="1"
+                 {% endif %}
+            {% endif %}
+            name="{% if form.prefix %}{{ form.prefix }}-{% endif %}{{ field.name }}"
+            id="{{ field.id_for_label }}"
+            value="{{ field.value|default:'' }}"
+            class="{{ field.field.widget.attrs.class }} p-2 max-w-lg shadow-sm block w-full focus:hover:ring-gray-500 focus:border-gray-500 sm:text-sm border-1 border-gray-300 rounded-md">
+
+        {% for error in field.errors %}
+            {% include "includes/form_field_error.html" with error=error %}
+        {% endfor %}
+    </div>
+</div>

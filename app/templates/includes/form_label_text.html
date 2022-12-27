@@ -1,0 +1,7 @@
+<div class="flex">
+    {% if field.help_text %}
+        <span class="border-b-1 border-dotted border-black">{% include "includes/tooltip.html" with visible=field.label tooltip_text=field.help_text %}</span>
+    {% else %}
+        <span>{{ field.label }}</span>
+    {% endif %}{% if field.field.required %}*{% endif %}
+</div>

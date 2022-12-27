@@ -1,0 +1,14 @@
+<div x-data="Dashboard.modal()">
+    <div class="flex-shrink-0 h-7 w-7 transform" title="delete">
+        <button
+                x-on:click="open()"
+                data-toggle="modal"
+                data-target="#confirmDeleteModal">
+            <i class="fas fa-trash-alt text-gray-500 hover:text-gray-700" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    {% with action_url=delete_url object=record %}
+        {% include "modals/confirm_delete.html" %}
+    {% endwith %}
+</div>

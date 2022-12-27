@@ -1,0 +1,6 @@
+{% if not read_only %}
+    <div class="flex text-left">
+        {% include "includes/actions/delete.html" %}
+        {% include "includes/actions/edit.html" %}
+    </div>
+{% endif %}

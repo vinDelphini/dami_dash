@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="p-8 p-8 mt-6 lg:mt-0 rounded shadow bg-white card-body">
+    <form method="POST">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div class="text-center bg-red-200 my-2 py-4 rounded">
+                Please correct the errors below in your form.
+            </div>
+            {% for error in form.non_field_errors %}
+                {% include "includes/form_field_error.html" with error=error %}
+            {% endfor %}
+        {% endif %}
+        {% include "includes/form_input.html" with field=form.first_name %}
+        {% include "includes/form_input.html" with field=form.last_name %}
+        {% include "includes/form_input.html" with field=form.email %}
+        {% include "includes/form_input.html" with field=form.username %}
+        {% include "includes/form_select.html" with field=form.time_zone %}
+        {% if not form.instance.is_active %} {# Don't show if profile user is active #}
+            {# This checkbox is used to resend django-invitations to invited users #}
+            {% include "includes/form_checkbox.html" with field=form.resend_invite %}
+        {% endif %}
+
+        <div class="flex mt-4 justify-end">
+            <button type="submit"
+                    class="ml-3 mr-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:hover:ring-gray-500">
+                Save
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+<div class="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-start sm:border-b sm:border-gray-200 py-2 sm:py-5">
+    <label for={{ field.id_for_label }} class="flex text-sm font-medium text-gray-700 col-sm-2 col-form-label">
+        {% include "includes/form_label_text.html" with field=field %}
+    </label>
+    <input
+            id="{{ field.id_for_label }}"
+            name="{% if form.prefix %}{{ form.prefix }}-{% endif %}{{ field.name }}"
+            type="checkbox"
+            {% if field.value is True %}
+            checked
+            {% endif %}
+            {% if field.field.disabled %} disabled {% endif %}
+            {{ field.value }}
+            class="focus:hover:ring-gray-500 h-4 w-4 text-gray-600 border-1 border-gray-300 rounded">
+
+    {% for error in field.errors %}
+        {% include "includes/form_field_error.html" with error=error %}
+    {% endfor %}
+</div>

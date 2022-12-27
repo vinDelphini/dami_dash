@@ -1,0 +1,13 @@
+{% if messages %}
+{% for message in messages %}
+<div class="text-center my-2 {% if message.tags == 'error' %}text-red-700 {% elif message.tags == 'info' %}font-green-700{% else %}{{ message.tags }}{% endif %}">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if form.errors %}
+{% for error, text in form.errors.items %}
+<div class="text-center text-red-700 my-2">{{ text }}</div>
+{% endfor %}
+{% endif %}

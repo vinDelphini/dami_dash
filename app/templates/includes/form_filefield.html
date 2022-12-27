@@ -1,0 +1,16 @@
+<div class="sm:grid sm:grid-cols-2 sm:gap-4 sm:items-center sm:border-b sm:border-gray-200 py-2 sm:py-5">
+    <label for="{{ field.id_for_label }}"
+           class="block text-sm font-medium text-gray-700 col-sm-2 col-form-label">
+        {% include "includes/form_label_text.html" with field=field %}
+    </label>
+    <div class="text-sm leading-4 font-medium text-gray-700">
+        <input type="file"
+               {% if field.field.required %}required {% endif %}
+               {% if field.field.disabled %} disabled {% endif %}
+               name="{% if form.prefix %}{{ form.prefix }}-{% endif %}{{ field.name }}" value="{{ field.value }}" accept="image/*" id="{{ field.id_for_label }}"
+               class="max-w-lg w-full mb-2 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:hover:ring-gray-500">
+        <div title="{{ field.value }}" class="max-w-lg w-full pb-1 whitespace-nowrap overflow-hidden overflow-ellipsis">
+            Currently: {{ field.value|default:"None" }}
+        </div>
+    </div>
+</div>

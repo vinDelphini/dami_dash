@@ -1,0 +1,62 @@
+{# Used for both admin profile detail and current user's profile detail. #}
+{% extends "base.html" %}
+
+{% block heading %}
+  Profile for {{ profile.user.get_full_name }}
+{% endblock %}
+
+{% block content %}
+    {% if request.user == profile.user %}
+    <div class="card-body">
+        <a class='mb-6 inline-flex items-center px-3 py-2 font-medium rounded leading-5 bg-gray-500 text-primary-100 text-white hover:text-white hover:bg-gray-600'
+           href="{% url 'account_change_password' %}">
+            Change Password
+        </a>
+    </div>
+    {% endif %}
+    
+
+<div class="card-header py-3">
+<div class="card-body">
+    <a href="{% block edit_url %}{% url 'current-profile-edit' %}{% endblock %}" class="btn btn-primary btn-circle"><i class="fa-regular fa-pen-circle"></i>Edit</a>
+    <hr>
+    <div class="mt-2 border-t border-gray-200">
+        <dl class="divide-y divide-gray-200">
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-1 sm:gap-4">
+                <dt class="text-sm font-medium text-gray-500">
+                    Full name
+                </dt>
+                <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2 col-auto">
+                    <span class="flex-grow">{{ profile.user.get_full_name }}</span>
+                </dd>
+            </div>
+
+            <hr class="divider my-0">
+            <div class="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
+                <dt class="text-sm font-medium text-gray-500">
+                    Email Address
+                </dt>
+                <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2 col-auto">
+                    <span class="flex-grow">{{ profile.user.email }}</span>
+                </dd>
+            </div>
+            <hr class="divider my-0">
+            <div class="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
+                <dt class="text-sm font-medium text-gray-500">
+                    Timezone
+                </dt>
+                <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2 col-auto">
+                    <span class="flex-grow">{{ profile.time_zone }}</span>
+                </dd>
+            </div>
+        </dl>
+
+        <dl class="divide-y divide-gray-200">
+
+        </dl>
+    </div>
+</div>    
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,162 @@
+{% load django_tables2 %}
+{% load i18n %}
+{% block table-wrapper %}
+    <div class="flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden">
+                    {% block table %}
+                        <table {% render_attrs table.attrs class="table min-w-full divide-y divide-gray-200" %}>
+                            {% block table.thead %}
+                                {% if table.show_header %}
+                                    <thead {{ table.attrs.thead.as_html }}>
+                                        <tr>
+                                            {% for column in table.columns %}
+                                                <th class="whitespace-nowrap text-left p-4 lg:px-6 text-md text-gray-900 bg-gray-300 font-condensed uppercase"
+                                                    scope="col">
+                                                    {% if column.orderable %}
+                                                        <a class="text-gray-900 bg-gray-300" href="{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}">{{ column.header }} <i class="fas fa-sort text-gray-500"></i></a>
+                                                    {% else %}
+                                                        <span>{{ column.header }}</span>
+                                                    {% endif %}
+                                                </th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+                                {% endif %}
+                            {% endblock table.thead %}
+                            {% block table.tbody %}
+                                <tbody {{ table.attrs.tbody.as_html }} class="bg-white divide-y divide-gray-200">
+                                {% for row in table.paginated_rows %}
+                                    {% block table.tbody.row %}
+                                        <tr {{ row.attrs.as_html }}>
+                                            {% for column, cell in row.items %}
+                                                <td {{ column.attrs.td.as_html }} class="p-4 lg:px-6 text-left text-lg text-gray-700 font-condensed">
+                                                    {% if column.localize == None %}
+                                                        <span class="">{{ cell }}</span>
+                                                    {% else %}
+                                                        {% if column.localize %}
+                                                            {{ cell|localize }}
+                                                        {% else %}
+                                                            {{ cell|unlocalize }}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endblock table.tbody.row %}
+                                    {% empty %}
+                                    {% if table.empty_text %}
+                                        {% block table.tbody.empty_text %}
+                                            <tr>
+                                                <td class="p-4 lg:px-6 text-left text-lg text-gray-700 font-condensed"
+                                                    colspan="{{ table.columns|length }}">{{ table.empty_text }}</td>
+                                            </tr>
+                                        {% endblock table.tbody.empty_text %}
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            {% endblock table.tbody %}
+                            {% block table.tfoot %}
+                                {% if table.has_footer %}
+                                    <tfoot {{ table.attrs.tfoot.as_html }}>
+                                    <tr>
+                                        {% for column in table.columns %}
+                                            <td {{ column.attrs.tf.as_html }}>{{ column.footer }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    </tfoot>
+                                {% endif %}
+                            {% endblock table.tfoot %}
+                        </table>
+                    {% endblock table %}
+
+                    {% block pagination %}
+                        {% if table.page %}
+                            <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                                <div class="flex-1 flex justify-between sm:hidden">
+                                    <a href="#"
+                                       class="relative inline-flex items-center px-2 py-1 border border-gray-300 text-sm font-medium font-condensed text-gray-700 bg-white hover:text-gray-500">
+                                        Previous
+                                    </a>
+                                    <a href="#"
+                                       class="ml-3 relative inline-flex items-center px-2 py-1 border border-gray-300 text-sm font-medium font-condensed text-gray-700 bg-white hover:text-gray-500">
+                                        Next
+                                    </a>
+                                </div>
+                                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                                    <div class="card-body">
+                                        <p class="text-sm text-gray-700 font-condensed">
+                                            {% trans "Showing" %}
+                                            <span class="font-medium">{{ table.page.start_index }}</span>
+                                            {% trans "to" %}
+                                            <span class="font-medium">{{ table.page.end_index }}</span>
+                                            {% trans "of" %}
+                                            <span class="font-medium">{{ table.paginator.count }}</span>
+                                            {% trans "results" %}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <nav class="relative z-0 inline-flex shadow-sm -space-x-px"
+                                             aria-label="Pagination">
+                                            {% if table.page.has_previous %}
+                                                {% block pagination.previous %}
+                                                    <a href="{% querystring table.prefixed_page_field=table.page.previous_page_number %}"
+                                                       class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                                        <span class="sr-only">
+                                                            {% trans 'Previous' %}
+                                                        </span>
+                                                        <!-- Heroicon name: chevron-left -->
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                             viewBox="0 0 20 20"
+                                                             fill="currentColor" aria-hidden="true">
+                                                            <path fill-rule="evenodd"
+                                                                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                                  clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </a>
+                                                {% endblock pagination.previous %}
+                                            {% endif %}
+
+                                            {% if table.page.has_previous or table.page.has_next %}
+                                                {% block pagination.range %}
+                                                    {% for p in table.page|table_page_range:table.paginator %}
+                                                        <a class="relative inline-flex items-center px-4 py-2 border
+                                                              border-gray-300 bg-white text-sm font-medium text-gray-700
+                                                              hover:bg-gray-50 hover:text-gray-800
+                                                              {% if table.page.number == p %} bg-gray-50{% endif %}"
+                                                           {% if p != '...' %}href="{% querystring table.prefixed_page_field=p %}"{% endif %}>
+                                                            {{ p }}
+                                                        </a>
+                                                    {% endfor %}
+                                                {% endblock pagination.range %}
+                                            {% endif %}
+                                            {% if table.page.has_next %}
+                                                {% block pagination.next %}
+                                                    <a href="{% querystring table.prefixed_page_field=table.page.next_page_number %}"
+                                                       class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                                        <span class="sr-only">
+                                                            {% trans 'Next' %}
+                                                        </span>
+                                                        <!-- Heroicon name: chevron-right -->
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                             viewBox="0 0 20 20"
+                                                             fill="currentColor" aria-hidden="true">
+                                                            <path fill-rule="evenodd"
+                                                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                                  clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </a>
+                                                {% endblock pagination.next %}
+                                            {% endif %}
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endblock pagination %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock table-wrapper %}

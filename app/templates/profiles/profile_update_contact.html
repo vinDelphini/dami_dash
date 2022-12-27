@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block heading %}
+Profile for {{ profile.user.get_full_name }}
+{% endblock %}
+
+{% block content %}
+<div class="p-8 p-8 mt-6 lg:mt-0 rounded shadow bg-white card-body">
+    <form method="POST">
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <div class="text-center bg-red-200 my-2 py-4 rounded">
+            Please correct the errors below in your form.
+        </div>
+        {% endif %}
+
+        {% include "includes/form_input.html" with form=user_form field=user_form.first_name %}
+
+        {% include "includes/form_input.html" with form=user_form field=user_form.last_name %}
+
+        {% include "includes/form_select.html" with form=user_form field=profile_form.time_zone %}
+
+        <div class="flex mt-4 justify-end">
+            <button type="submit"
+                    class="mr-4 ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:hover:ring-gray-500">
+                Save
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

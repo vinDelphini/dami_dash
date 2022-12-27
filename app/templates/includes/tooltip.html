@@ -1,0 +1,19 @@
+{# Define the x-cloak directive to hide the modal until alpine.js initializes. #}
+<style>
+  [x-cloak] {
+      display: none !important;
+   }
+</style>
+
+<div class="whitespace-normal">
+    <div x-data="{ tooltip: false }" class="relative z-30 inline-flex">
+        <div x-on:mouseover="tooltip = true" x-on:mouseleave="tooltip = false">
+            {{ visible }}
+        </div>
+        <div class="relative" x-cloak x-show.transition.origin.top="tooltip">
+            <div class="absolute top-0 z-50 w-32 p-2 -mt-1 text-sm leading-tight bg-gray-800 text-gray-50 font-condensed font-semibold transform -translate-x-1/2 -translate-y-full rounded-lg shadow-lg">
+                {{ tooltip_text }}
+            </div>
+        </div>
+    </div>
+</div>
