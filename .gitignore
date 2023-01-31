@@ -1,0 +1,7 @@
+# Logs and local files
+venv/
+*/__pycache__/*
+
+# Editor files
+.idea/*
+.vscode/*
