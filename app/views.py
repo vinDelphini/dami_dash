@@ -1,6 +1,5 @@
-from django.shortcuts import render
-
 # Create your views here.
+import logging
 from allauth.account.views import SignupView
 from common.mixins import SuperUserRequiredMixin
 from django.conf import settings
@@ -21,6 +20,8 @@ from django.views.generic import (
     RedirectView,
     UpdateView,
 )
+from django.views import View
+from django.shortcuts import render
 from app.forms import (
     AdminUserCreateForm,
     AdminUserEditForm,
@@ -282,5 +283,16 @@ class AllUsersList(SuperUserRequiredMixin, SingleTableView):
             return reverse_lazy("dash")'''
 
 
-def Dashboard(request):
-    return render(request, "dashboard/dashboard.html")
+
+class PowerBIDash(LoginRequiredMixin, DetailView):
+    template_name = "dashboard/dashboard.html"
+    
+    def get(self, request, *args, **kwargs):
+        # logging.info(self.request.user)
+        
+        if self.request.user.is_superuser:
+            print(self.request.user)
+            url = "https://app.powerbi.com/reportEmbed?reportId=01e90c2b-7675-4846-bfaf-bc99e9ccc82b&autoAuth=true&ctid=dafe49bc-5ac3-4310-97b4-3e44a28cbf18"
+            return render(request, self.template_name, {"dash_url": url})
+        else:
+            return render(request, self.template_name, {})

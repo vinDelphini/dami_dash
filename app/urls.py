@@ -7,8 +7,8 @@ from app.views import (
     ProfileDetailView,
     UserCreateView,
     UserUpdateView,
-    # Dashboard
-    Dashboard,
+    # PowerBI Dashboard
+    PowerBIDash,
 )
 
 urlpatterns = [
@@ -19,6 +19,6 @@ urlpatterns = [
     path("create/", UserCreateView.as_view(), name="admin-user-create"),
     path("<int:pk>/edit", UserUpdateView.as_view(), name="admin-user-edit"),
     path("<int:pk>/", ProfileDetailView.as_view(), name="admin-profile-detail"),
-    # Dashboard
-    path("dash/", Dashboard, name="dash"),
+    # PowerBI
+    path('dashpbi/', PowerBIDash.as_view(),  name="dashpbi")
 ]
