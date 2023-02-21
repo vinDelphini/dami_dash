@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>DAMI - Login</title>
 
     <!-- Custom fonts for this template-->
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
@@ -25,64 +25,38 @@
 
 <body class="bg-gradient-secondary">
 
-    <div class="container">
+    <div class="container justify-content-center">
 
         <!-- Outer Row -->
         <div class="row justify-content-center">
 
-            <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="col-xl-12 col-lg-10 col-md-9">
 
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-8 d-none d-lg-block">
+                                <img src="{% static 'img/GettyImages-956878656.png' %}" class="img-fluid">
+                            </div>
+                            <div class="col-lg-4">
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form class="mt-8 space-y-6" method="POST" action="{% url 'account_login' %}">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="remember" value="true">
-                                       
-                                            <div>
-                                                <label for="id_login" class="sr-only">Username or Email Address</label>
-                                                <input id="id_login" name="login" type="text" autocomplete="email" required
-                                                       class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:hover:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm"
-                                                       placeholder="Username or Email">
-                                            </div>
-                                            <div>
-                                                <label for="id_password" class="sr-only">Password</label>
-                                                <input id="id_password" name="password" type="password" autocomplete="off" required
-                                                       class="mt-2 mb-2 appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:hover:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm"
-                                                       placeholder="Password">
-                                            </div>
-                                        
-                                
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <input id="id_remember" name="remember" type="checkbox"
-                                                       class="h-4 w-4 text-gray-600 focus:hover:ring-gray-500 border-gray-300 rounded">
-                                                <label for="id_remember" class="px-2 ml-2 block text-sm text-gray-900">
-                                                    Remember me
-                                                </label>
-                                            </div>
-                                
-                                            <div class="text-sm mt-4">
-                                                <a href="{% url 'account_reset_password' %}" class="font-medium text-gray-600 hover:text-gray-500">
-                                                    Forgot your password?
-                                                </a>
-                                            </div>
+                                    <form class="mt-8 space-y-6" method="POST" action="{% url 'account_login' %}">{% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="text" name="login" type="text" autocomplete="email" required
+                                                class="form-control form-control-user"
+                                                id="id_login" aria-describedby="emailHelp"
+                                                placeholder="Enter Email Address...">
                                         </div>
-                                
-                                        <div>
-                                            <button type="submit"
-                                                    class="mt-6 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:hover:ring-gray-500">
-                                                Sign in
-                                            </button>
+                                        <div class="form-group">
+                                            <input name="password" type="password" autocomplete="off" required 
+                                                class="form-control form-control-user"
+                                                id="id_password" placeholder="Password">
                                         </div>
-                                        
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">Sign in</button>
                                     </form>
                                     <hr>
                                     <div class="text-center">
