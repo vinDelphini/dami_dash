@@ -22,3 +22,5 @@ jobs:
       - name: Run Tests
         run: |
           pytest
+        env:
+          DJANGO_SETTINGS_MODULE: dami.settings
