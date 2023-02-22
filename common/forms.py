@@ -9,5 +9,6 @@ class AxesLoginForm(LoginForm):
 
     def user_credentials(self):
         credentials = super().user_credentials()
-        credentials["login"] = credentials.get("email") or credentials.get("username")
+        # credentials["login"] = credentials.get("email") or credentials.get("username")
+        credentials["login"] = credentials.get("email")
         return credentials
