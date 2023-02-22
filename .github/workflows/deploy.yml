@@ -12,7 +12,9 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: '3.8'
+        # FIXME: Revert to '3.8' once Python is fixed:
+        # https://bugs.python.org/issue44061
+        python-version: '3.8.9'
     
     steps:
     - uses: actions/checkout@v3
