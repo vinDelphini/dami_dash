@@ -28,7 +28,17 @@ jobs:
           source venv/bin/activate
       
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          apt-get install screen
+          pip install -r requirements.txt
+
+      - name: Run Server
+        run: |
+          cd dami_dash/
+          python3 manage.py makemigrations
+          python3 manage.py migrate
+          python3 manage.py collectstatic --noinput
+          screen -d -m python3 manage.py runserver 0:8001
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       
